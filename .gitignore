@@ -1,0 +1,27 @@
+# secrets
+.env
+.env.local
+.env.*.local
+.env.production
+
+# runtime scratch and media (state lives in Supabase)
+data/*
+!data/.gitkeep
+results/
+out/
+*.mp4
+*.mov
+*.wav
+*.mp3
+
+# local tooling
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+
+# Claude Code local-only files (project agent memory IS committed)
+.claude/settings.local.json
+.claude/agent-memory-local/
+CLAUDE.local.md

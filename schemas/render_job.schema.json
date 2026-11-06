@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/render_job.schema.json",
+  "title": "Render Job",
+  "description": "One ComfyUI render attempt. Maps to the `renders` table. Output is a Storage path, never a signed URL (signed URLs expire in about 6 hours).",
+  "type": "object",
+  "required": ["concept_id", "attempt", "pass_type", "backend", "workflow", "params", "idempotency_key", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "concept_id": { "type": "string", "format": "uuid" },
+    "attempt": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "pass_type": { "type": "string", "enum": ["draft", "final"] },
+    "backend": { "type": "string", "enum": ["comfy_api", "runpod", "comfy_cloud", "local"] },
+    "deployment": { "type": ["string", "null"] },
+    "workflow": { "type": "string", "minLength": 1 },
+    "workflow_release": { "type": ["string", "null"] },
+    "params": { "type": "object", "description": "Keys are node titles from the workflow contract" },
+    "seed": { "type": ["integer", "null"] },
+    "job_id": { "type": ["string", "null"] },
+    "idempotency_key": { "type": "string", "minLength": 8 },
+    "status": { "type": "string", "enum": ["queued", "running", "succeeded", "failed", "cancelled"] },
+    "gpu_seconds": { "type": ["number", "null"], "minimum": 0 },
+    "cost_usd": { "type": ["number", "null"], "minimum": 0 },
+    "output_path": { "type": ["string", "null"], "not": { "pattern": "^https?://" } },
+    "qa": {
+      "type": "object",
+      "properties": {
+        "persona_consistency": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "artifacts": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "temporal_stability": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "lip_sync": { "type": ["integer", "null"], "minimum": 1, "maximum": 5 },
+        "framing": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "clean_frame": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "notes": { "type": "string" }
+      }
+    },
+    "qa_pass": { "type": ["boolean", "null"] },
+    "error": { "type": ["string", "null"] }
+  }
+}

@@ -1,0 +1,44 @@
+# EXAMPLE contract (illustrative). Numbers are placeholders, not recommendations.
+# Copy to <workflow>.contract.yaml and replace.
+workflow: persona_example
+api_file: persona_example.api.json
+comfy:
+  build: null                 # comfy-build.yaml name
+  release: null               # rel_... recorded after `comfy build release create`
+  deployment: null            # dep_... (draft and final may be separate deployments of one Build)
+components:                   # every entry must be `cleared` in knowledge/licenses.md
+  - "<model or node pack name>"
+inputs:                       # keyed by node TITLE in the API-format JSON
+  prompt:        { type: string, required: true }
+  ref_image:     { type: asset,  required: true, note: "persona reference image; upload as an asset" }
+  seed:          { type: int,    default: random }
+  width:         { type: int,    default: 480,   range: [256, 2048], multiple_of: 32 }
+  height:        { type: int,    default: 832,   range: [256, 2048], multiple_of: 32 }
+  length_frames: { type: int,    default: 49,    range: [9, 241] }
+  fps:           { type: int,    default: 24,    range: [12, 60] }
+profiles:
+  draft: { width: 480, height: 832, length_frames: 49 }
+  final: { width: 720, height: 1280, length_frames: 121 }
+outputs:
+  video: { node_title: output_video, type: video }
+qa:
+  expected_duration_tolerance_s: 0.5
+  require_audio: false
+limits:
+  max_retries: 2
+  timeout_minutes: 30         # include cold start when the deployment is at --min 0
+golden_clips: []              # ids/paths of the regression set
+template:                     # OPTIONAL. Leave `id: null` for internal-only workflows. Spec: docs/TEMPLATE-SPEC.md
+  id: null                    # slug, e.g. persona-swap
+  version: "0.1.0"            # semver; published versions are immutable
+  display_name: ""
+  tagline: ""
+  category: effect            # swap | effect | image_edit | upscale | caption | utility
+  safety_class: low           # low | face_input | high  (face_input/high need consent + moderation)
+  consent_required: false
+  credits: null               # set from MEASURED cost, never guessed
+  status: draft               # draft | internal | beta | public | deprecated
+  previews: []
+  inputs_ui: {}               # per-input label/help/limits
+  output_policy: { watermark: true, c2pa: true, visible_ai_label: true }
+notes: ""

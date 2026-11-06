@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/funnel.schema.json",
+  "title": "Funnel Flow Spec",
+  "description": "Comment-to-DM funnel spec stored in funnels.copy. A human builds the flow once in ManyChat; messaging is user-initiated only.",
+  "type": "object",
+  "required": ["keyword", "brand", "offer", "trigger", "public_reply_variants", "opt_in_text", "dm_sequence", "stop_text", "escalate_if", "ttl_hours"],
+  "additionalProperties": false,
+  "properties": {
+    "keyword": { "type": "string", "pattern": "^[A-Z0-9]{3,20}$" },
+    "brand": { "type": "string" },
+    "offer": {
+      "type": "object",
+      "required": ["type", "name", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "enum": ["lead_magnet", "tripwire", "product", "coaching", "merch", "affiliate", "community"] },
+        "name": { "type": "string" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "required": ["scope", "match"],
+      "additionalProperties": false,
+      "properties": {
+        "scope": { "type": "string", "enum": ["reels_and_posts", "specific_posts", "story_replies"] },
+        "match": { "type": "string" }
+      }
+    },
+    "public_reply_variants": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+    "opt_in_text": { "type": "string", "minLength": 1 },
+    "dm_sequence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "when": { "type": "string", "description": "Reply text that releases this step. Do not name this key `on`: YAML 1.1 reads it as true" },
+          "after_minutes": { "type": "integer", "minimum": 0 },
+          "text": { "type": "string" },
+          "capture_field": { "type": "string" }
+        }
+      }
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "fields": { "type": "object", "additionalProperties": { "type": "string" } },
+    "stop_text": { "type": "string", "minLength": 1 },
+    "escalate_if": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "ttl_hours": { "type": "integer", "minimum": 1, "maximum": 24, "description": "Follow-ups only inside Meta's 24-hour window" },
+    "notes": { "type": "string" }
+  }
+}

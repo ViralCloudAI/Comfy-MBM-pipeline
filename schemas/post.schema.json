@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/post.schema.json",
+  "title": "Post",
+  "description": "One scheduled or published post on one platform. Maps to the `posts` table. Captions must differ across platforms.",
+  "type": "object",
+  "required": ["concept_id", "asset_id", "platform", "account_id", "caption", "ai_label", "dry_run", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "concept_id": { "type": "string", "format": "uuid" },
+    "asset_id": { "type": "string", "format": "uuid" },
+    "platform": { "type": "string", "enum": ["instagram", "tiktok", "youtube", "facebook", "x", "threads"] },
+    "account_id": { "type": "string", "minLength": 1 },
+    "blotato_submission_id": { "type": ["string", "null"] },
+    "scheduled_at": { "type": ["string", "null"], "format": "date-time" },
+    "posted_at": { "type": ["string", "null"], "format": "date-time" },
+    "post_url": { "type": ["string", "null"], "format": "uri" },
+    "caption": { "type": "string", "minLength": 1 },
+    "hashtags": { "type": "array", "items": { "type": "string" } },
+    "first_comment": { "type": ["string", "null"], "description": "Contains the CTA keyword" },
+    "ai_label": { "type": "boolean", "description": "AI-generated disclosure set where the platform supports it" },
+    "dry_run": { "type": "boolean" },
+    "status": { "type": "string", "enum": ["pending", "scheduled", "posted", "failed"] },
+    "fail_reason": { "type": ["string", "null"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "dry_run": { "const": true } } },
+      "then": { "properties": { "status": { "enum": ["pending", "failed"] } } }
+    }
+  ]
+}

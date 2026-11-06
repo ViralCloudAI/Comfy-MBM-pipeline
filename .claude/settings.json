@@ -1,0 +1,35 @@
+{
+  "agent": "orchestrator",
+  "env": {
+    "MBM_DRY_RUN": "1",
+    "MBM_ACTIVE_BRAND": "_template",
+    "MBM_DAILY_BUDGET_USD": "10",
+    "MBM_VIDEO_BUDGET_USD": "2"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(scripts/store *)",
+      "Bash(scripts/comfy_run *)",
+      "Bash(scripts/transcribe *)",
+      "Bash(scripts/remotion_render *)",
+      "Bash(scripts/metrics_pull *)",
+      "Bash(scripts/manychat *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.production)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(curl * | sh*)",
+      "Bash(curl * | bash*)"
+    ]
+  }
+}

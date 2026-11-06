@@ -1,0 +1,27 @@
+{
+  "_readme": "EXAMPLE ONLY. Merge the `hooks` block into .claude/settings.json in Phase 1, after the referenced scripts exist. Exit code 2 from a PreToolUse command blocks the tool call. See docs/GUARDRAILS.md.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-bash-guard.sh" }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-secrets.sh" }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/store status --brief" }
+        ]
+      }
+    ]
+  }
+}

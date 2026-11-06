@@ -1,0 +1,20 @@
+# CTA library (template). One keyword -> one funnel -> one offer. Keywords are UPPERCASE, 3-20 chars, [A-Z0-9].
+# Placeholders only: replace with real offers. URLs must be yours.
+brand: _template
+ctas:
+  - keyword: WORKFLOW
+    offer_type: lead_magnet        # lead_magnet | tripwire | product | coaching | merch | affiliate | community
+    offer_name: "<free starter pack>"
+    url: "https://example.com/replace-me"
+    spoken_cta: "Comment WORKFLOW and I'll send it."
+    fits_hooks: [tutorial_promise, transformation]
+  - keyword: PROMPTS
+    offer_type: tripwire
+    offer_name: "<prompt pack>"
+    url: "https://example.com/replace-me"
+    spoken_cta: "Comment PROMPTS for the pack."
+    fits_hooks: [curiosity_gap, bold_claim]
+rules:
+  max_active_funnels: 5
+  keyword_reuse_cooldown_days: 30
+  first_comment_template: "Comment {KEYWORD} and I'll DM you {offer_name}."

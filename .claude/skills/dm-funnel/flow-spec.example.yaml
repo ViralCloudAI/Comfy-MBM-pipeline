@@ -1,0 +1,34 @@
+# Example flow spec: the agent writes this to funnels.copy and renders a human build sheet.
+# Placeholders only. Replace with the active brand's real offer and copy.
+keyword: WORKFLOW
+brand: _template
+offer:
+  type: lead_magnet            # lead_magnet | tripwire | product | coaching | merch | affiliate | community
+  name: "Starter workflow pack"
+  url: "https://example.com/starter"      # placeholder
+trigger:
+  scope: reels_and_posts       # restrict to specific posts via source_post
+  match: exact_keyword_case_insensitive
+public_reply_variants:
+  - "Sent! Check your DMs"
+  - "On its way, check your inbox"
+  - "Done. Look for my message"
+opt_in_text: "Reply YES to get the pack (and tips from me). Reply STOP anytime to opt out."
+dm_sequence:
+  - id: welcome
+    text: "Hey! I'm {{persona_name}} (an AI character). Want the {{offer.name}}? Reply YES."
+  - id: deliver
+    when: "YES"                # NOTE: never name a key `on` (YAML 1.1 parses it as boolean true)
+    text: "Here you go: {{offer.url}}"
+  - id: qualify
+    after_minutes: 10
+    text: "Quick question: what are you trying to make with it?"
+    capture_field: goal
+tags: [kw_workflow, lead_magnet_sent]
+fields:
+  video_id: "{{post_id}}"
+  source_post: "{{post_url}}"
+stop_text: "You're unsubscribed. No more messages."
+escalate_if: ["refund", "scam", "price", "buy", "legal", "complaint"]
+ttl_hours: 24                  # follow-ups only inside Meta's window
+notes: "Build once in ManyChat, publish the flow, then record manychat_flow_id in the funnels row."

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/trend_brief.schema.json",
+  "title": "Trend Brief",
+  "description": "Structured teardown of one trending video. Maps to the `briefs` table. Unknown values are null, never guessed.",
+  "type": "object",
+  "required": ["trend_id", "brand", "url", "hook_text", "hook_type", "format_label", "why_it_works", "originality_risk", "brand_safety"],
+  "additionalProperties": false,
+  "properties": {
+    "trend_id": { "type": "string", "format": "uuid" },
+    "brand": { "type": "string", "minLength": 1 },
+    "url": { "type": "string", "format": "uri" },
+    "hook_text": { "type": "string", "minLength": 1, "description": "First line spoken or shown, verbatim" },
+    "hook_type": {
+      "type": "string",
+      "enum": ["pattern_interrupt", "open_loop", "bold_claim", "relatable_pov", "tutorial_promise", "contrarian", "curiosity_gap", "transformation", "social_proof", "other"]
+    },
+    "hook_seconds": { "type": ["number", "null"], "minimum": 0, "maximum": 60 },
+    "visual_desc": { "type": ["string", "null"], "maxLength": 600 },
+    "shot_list": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["t", "desc"],
+        "additionalProperties": false,
+        "properties": {
+          "t": { "type": "number", "minimum": 0 },
+          "desc": { "type": "string" },
+          "text_on_screen": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "audio_id": { "type": ["string", "null"] },
+    "audio_title": { "type": ["string", "null"] },
+    "audio_type": { "type": ["string", "null"], "enum": ["original", "licensed", "unknown", null] },
+    "caption": { "type": ["string", "null"] },
+    "hashtags": { "type": "array", "items": { "type": "string" } },
+    "keywords": { "type": "array", "maxItems": 10, "items": { "type": "string" } },
+    "format_label": { "type": "string", "minLength": 1 },
+    "why_it_works": { "type": "string", "minLength": 1, "description": "Names a viewer behavior: share, comment or save because..." },
+    "transcript_ref": { "type": ["string", "null"], "description": "Storage path to the cached transcript" },
+    "originality_risk": { "type": "string", "enum": ["low", "medium", "high"] },
+    "brand_safety": { "type": "string", "enum": ["ok", "review", "block"] }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "_readme": "Not loaded by Claude Code (wrong filename on purpose). Connection details marked TO CONFIRM must be checked against each vendor's docs before use. Preferred: define each server INLINE in the one agent that needs it (see commented mcpServers blocks in .claude/agents/*.md) so its tool list never enters the main context. To use project-wide instead, copy this file to .mcp.json. Headless `claude -p` runs auto-load .mcp.json without approval prompts.",
+  "mcpServers": {
+    "apify": {
+      "type": "http",
+      "url": "https://mcp.apify.com",
+      "headers": { "Authorization": "Bearer ${APIFY_TOKEN}" }
+    },
+    "blotato": {
+      "type": "http",
+      "url": "https://mcp.blotato.com/mcp",
+      "headers": { "blotato-api-key": "${BLOTATO_API_KEY}" }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--read-only", "--project-ref=${SUPABASE_PROJECT_REF}"],
+      "env": { "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}" }
+    }
+  }
+}
